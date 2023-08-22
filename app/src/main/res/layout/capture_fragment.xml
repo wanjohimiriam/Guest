@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/create_accountTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/comf"
+        android:text="Capture Details"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    >
+
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:background="@drawable/round_edit_text"
+            android:hint="Name"
+            android:id="@+id/nameT"
+            android:layout_margin="10dp"
+            android:textColorHint="@color/colorAccent"
+            />
+
+        <ListView
+            android:id="@+id/listViewResults"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:layout_marginTop="8dp"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="60dp"
+        android:src="@drawable/search_icon"
+        android:id="@+id/search_img"
+        android:visibility="gone"
+        />
+</LinearLayout>
+
+
+
+
+
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/round_edit_text"
+        android:hint="Email"
+        android:layout_margin="10dp"
+        android:textColorHint="@color/colorAccent"
+        android:id="@+id/emailT"
+        />
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/round_edit_text"
+        android:hint="Phone Number"
+        android:layout_margin="10dp"
+        android:textColorHint="@color/colorAccent"
+        android:id="@+id/pnumberT"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/round_edit_text"
+        android:hint="Company"
+        android:layout_margin="10dp"
+        android:textColorHint="@color/colorAccent"
+        android:id="@+id/companyT"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/round_edit_text"
+        android:hint="Designation"
+        android:layout_margin="10dp"
+        android:textColorHint="@color/colorAccent"
+        android:id="@+id/designationT"
+        />
+
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="@color/red"
+        android:fontFamily="@font/comf"
+        android:text="Submit"
+        android:textColor="@color/white"
+        tools:ignore="HardcodedText" />
+
+
+
+</LinearLayout>

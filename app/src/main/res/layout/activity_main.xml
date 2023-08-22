@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create An Impax Account"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/comf"
+            android:layout_marginTop="100dp"
+            android:layout_gravity="center"
+            tools:ignore="HardcodedText" />
+
+
+
+        <com.shobhitpuri.custombuttons.GoogleSignInButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:fontFamily="@font/comf"
+            android:text="CONTINUE WITH GOOGLE"
+            app:isDarkTheme="true"
+            android:id="@+id/googleB"
+            tools:ignore="HardcodedText" />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="By signing up,signing in or continuing,i agree to Impax Terms Of Use and Privacy Policy."
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:fontFamily="@font/comf"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="200dp"
+            android:layout_marginBottom="30dp"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+</ScrollView>

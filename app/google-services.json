@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "184912280014",
+    "project_id": "guestapp-396010",
+    "storage_bucket": "guestapp-396010.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184912280014:android:4fcba53cad336229a8939f",
+        "android_client_info": {
+          "package_name": "com.impax.impaxguestapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "184912280014-ueogk24apuo0lvq2lfqohbkn8d0n2j88.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.impax.impaxguestapp",
+            "certificate_hash": "7352a9e7b4217c40f18e3bed80e8f766b4b8a6e1"
+          }
+        },
+        {
+          "client_id": "184912280014-a6r1qfnsnq4s86i8dm70j4t7nsfupas1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIbyTvrE-Kg9yVp5Abm2_VcMAwpAit_VE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "184912280014-a6r1qfnsnq4s86i8dm70j4t7nsfupas1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardElevation="8dp"
+        android:layout_margin="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="187dp"
+            android:padding="8dp">
+
+
+            <RelativeLayout
+                android:id="@+id/relative_this"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/imageView"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/circle_shape"
+                    android:gravity="center_horizontal"
+                    android:text="G"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    tools:ignore="HardcodedText" />
+
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/name_of_guestTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/relative_this"
+                android:fontFamily="@font/comf"
+                android:text="My Job This"
+                android:textColor="@color/colorAccent"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+
+            <TextView
+                android:id="@+id/companyTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/name_of_guestTV"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/relative_this"
+                android:fontFamily="@font/comf"
+                android:text="Kelvin K"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/phoneTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/companyTV"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/relative_this"
+                android:fontFamily="@font/comf"
+                android:text="0758688880"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText" />
+
+
+            <TextView
+                android:id="@+id/emailTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/phoneTV"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/relative_this"
+                android:fontFamily="@font/comf"
+                android:text="00:00"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText" />
+
+
+            <TextView
+                android:id="@+id/timeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/emailTV"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/relative_this"
+                android:fontFamily="@font/comf"
+                android:text="00:00"
+                android:textColor="@color/red"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText" />
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
