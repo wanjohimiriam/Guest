@@ -1,5 +1,4 @@
 package com.impax.impaxguestapp;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,9 +19,12 @@ import androidx.fragment.app.Fragment;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +52,6 @@ public class CaptureFragment extends Fragment {
     private JSONArray item_visitors;
     private ArrayList<String>full_names;
     private ArrayList<String>company_name;
-   // private ArrayList<String>id;
     private ArrayList<String>email;
     private ArrayList<String>pnumber;
     private ArrayList<String>designation;
@@ -65,9 +66,6 @@ public class CaptureFragment extends Fragment {
 
 
 
-//    private boolean dataChanged = false;
-
-//    private String visitor_id ="";
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.capture_fragment, container, false);
 
@@ -94,28 +92,6 @@ public class CaptureFragment extends Fragment {
 
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, displayedItems);
         listview.setAdapter(adapter);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String selectedItem = displayedItems.get(position);
-                //showToast("Selected: " + selectedItem);
-                // Perform other actions as needed when an item is selected
-            }
-        });
-
-
-
-
-//        buttonSubmit.setEnabled(false);
-
-        nameT.addTextChangedListener(createTextWatcher());
-//        emailT.addTextChangedListener(createTextWatcher());
-//        companyT.addTextChangedListener(createTextWatcher());
-//        pnumberT.addTextChangedListener(createTextWatcher());
-//        designationT.addTextChangedListener(createTextWatcher());
-
-
         spinnerDialog=new SpinnerDialog(getActivity(),full_names,"Search",R.style.MyMaterialTheme,"Close");// With 	Animation
 
         spinnerDialog.setCancellable(true); // for cancellable
@@ -124,11 +100,9 @@ public class CaptureFragment extends Fragment {
 
         spinnerDialog.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
-            public void onClick(String item, int position) {
-                Toast.makeText(getActivity(), item + "  " + position+"", Toast.LENGTH_SHORT).show();
-                //selectedItems.setText(item + " Position: " + position);
+            public void onClick(String item, int position)
+            {
                 nameT.setText(item);
-                //visitor_id= id.get(position);
                 companyT.setText(company_name.get(position));
                 emailT.setText(email.get(position));
                 pnumberT.setText(pnumber.get(position));
@@ -146,141 +120,9 @@ public class CaptureFragment extends Fragment {
 
 
     }
-//    nameT.addTextChangedListener(new TextWatcher()
-//    {
-//        @Override
-//        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//        //do nothing
-//    }
-//
-//        @Override
-//        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//        // user is typing: reset already started timer (if existing)
-//        if (timer != null) {
-//            timer.cancel();
-//        }
-//    }
-//
-//        @Override
-//        public void afterTextChanged(Editable editable)
-//        {
-//
-//
-//            // user typed: start the timer
-//            timer = new Timer();
-//            timer.schedule(new TimerTask() {
-//                @Override
-//                public void run()
-//                {
-//                    // do your actual work here
-//                    if(!editable.toString().isEmpty())
-//                    {
-//                        get_asset_details(editable.toString());
-//                        //serialNo_text.requestFocus();
-//                    }
-//
-//                }
-//            }, 10000); // 10s delay before the timer executes the „run“ method from TimerTask
-//        }
-//    });
-
-    private TextWatcher createTextWatcher() {
-        return new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Update the dataChanged flag when text changes
-                //dataChanged = true;
-                buttonSubmit.setEnabled(true); // Enable the "Update" button
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                // user typed: start the timer
-                timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run()
-                    {
-                        // do your actual work here
-                        if(!s.toString().isEmpty())
-                        {
-                            getVisitors(s.toString());
-                            //serialNo_text.requestFocus();
-                        }
-
-                    }
-                }, 3000); // 10s delay before the timer executes the „run“ method from TimerTask
-            }
-
-            };
-        }
-
-
-//    private void updateData() {
-//        String selectedName = nameT.getText().toString(); // Get the selected name from the spinner dialog
-//
-//        // Fetch other data from fields
-//        final String updatedCompany = companyT.getText().toString().trim().toUpperCase();
-//        final String updatedEmail = emailT.getText().toString().trim();
-//        final String updatedPNumber = pnumberT.getText().toString().trim();
-//        final String updatedDesignation = designationT.getText().toString().trim();
-//
-//        StringRequest updateRequest = new StringRequest(Request.Method.POST, Constants.UPDATE, response -> {
-//            try {
-//                JSONObject obj = new JSONObject(response);
-//                if (!obj.getBoolean("error")) {
-//                    // Handle successful update
-//                    Toasty.info(getActivity(), "Update Successful", Toast.LENGTH_LONG, false).show();
-//
-//                    // Clear or update spinner data if needed
-//
-//                    // Reset UI components after update
-//                    companyT.setText("");
-//                    emailT.setText("");
-//                    pnumberT.setText("");
-//                    designationT.setText("");
-//                    buttonSubmit.setVisibility(View.GONE);
-//                } else {
-//                    // Handle error response
-//                    Toasty.error(getActivity(), obj.getString("message"), Toast.LENGTH_LONG, false).show();
-//                }
-//            } catch (JSONException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }, error -> {
-//            // Handle error response
-//            Log.d("error45", error.toString());
-//            Toasty.error(getActivity(), "Update Error", Toast.LENGTH_LONG, false).show();
-//        }) {
-//            @Nullable
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("id", visitor_id);
-//                params.put("name", selectedName);// Use the selected name for updating
-//                params.put("email", updatedEmail);
-//                params.put("company", updatedCompany);
-//                params.put("phone_number", updatedPNumber);
-//                params.put("designation", updatedDesignation);
-//                return params;
-//            }
-//        };
-//
-//        RequestHandler.getInstance(getContext()).addToRequestQueue(updateRequest);
-//    }
-
-
-
 
     private void loadspinner_visitors() {
         StringRequest loadSpinnerTools = new StringRequest(Request.Method.GET,Constants.GET_GUESTS , response -> {
-          //  Toasty.info(getContext(),response,Toast.LENGTH_LONG,false).show();
             JSONObject json = null;
 
             try {
@@ -307,7 +149,6 @@ public class CaptureFragment extends Fragment {
                 JSONObject o = array.getJSONObject(i);
                 full_names.add(o.getString(Bconfig.TAG_FULL_NAMES));
                 pnumber.add(o.getString(Bconfig.TAG_PNUMBER));
-                //id.add(o.getString(Bconfig.TAG_ID));
                 company_name.add(o.getString(Bconfig.TAG_COMPANY_NAME));
                 email.add(o.getString(Bconfig.TAG_EMAIL));
                 designation.add(o.getString(Bconfig.TAG_DESIGNATION));
@@ -316,56 +157,11 @@ public class CaptureFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-        /*spinnerDialogJobTypes.setAdapter(new ArrayAdapter<String>(EditProfile.this, android.R.layout.simple_spinner_dropdown_item,jobs));*/
     }
-
-    private void getVisitors(String s)
-    {
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.SEARCH, response -> {
-            try {
-                JSONObject obj = new JSONObject(response);
-
-                Log.d("getboolean", "post"+ obj.getString("name"));
-
-                nameT.setText(obj.getString("name"));
-                companyT.setText(obj.getString("email"));
-                emailT.setText(obj.getString("phone_number"));
-                pnumberT.setText(obj.getString("company"));
-                designationT.setText(obj.getString("designation"));
-
-            } catch (JSONException e) {
-                //Toasty.error(getActivity(), "Error parsing server response", Toast.LENGTH_LONG, false).show();
-                Log.e("CaptureFragment", "JSON parsing error: " + e.getMessage());
-                e.printStackTrace();
-            }
-        },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-                        Log.e("Error", "Error during post request", error);
-                        //Log.d("error45","error.toString()");
-
-                    }
-                }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String>params = new HashMap<>();
-                params.put("search",s);
-                //  params.put("captured_by",SharedPrefManager.getInstance(getContext()).getKeyUserEmail());
-                return params;
-            }
-        };
-        RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
-    }
-
 
     private void post()
     {
-        Log.d("debugging", "post: ");
+       // Log.d("debugging", "post: ");
         if(nameT.getText().toString().equals(""))
         {
             nameT.setError("This field is required");
@@ -399,64 +195,57 @@ public class CaptureFragment extends Fragment {
             final String pnumber = pnumberT.getText().toString().trim();
             final String designation = designationT.getText().toString().trim();
 
-            Log.d("fields", "post"+name +company+email+pnumber+ designation);
+            sendToDB(name,company,email,pnumber,designation);
 
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.POST_GUEST, response -> {
-                try {
-                    JSONObject obj = new JSONObject(response);
-
-                    Log.d("getboolean", "post"+ obj.getString("message"));
-                    if(obj.getBoolean("success"))
-                    {
-                        //Toasty.info(getContext(),obj.getString("message"), Toast.LENGTH_LONG,false).show();
-                        Toasty.info(getActivity(),"Checkin Success", Toast.LENGTH_LONG,false).show();
-                        Log.d("ClearFields", "Clearing fields after successful POST");
-
-                        nameT.setText("");
-                        companyT.setText("");
-                        emailT.setText("");
-                        pnumberT.setText("");
-                        designationT.setText("");
-                    }
-                    else
-                    {
-                        Toasty.error(getContext(),obj.getString("message"), Toast.LENGTH_LONG,false).show();
-                    }
-                } catch (JSONException e) {
-                    //Toasty.error(getActivity(), "Error parsing server response", Toast.LENGTH_LONG, false).show();
-                    Log.e("CaptureFragment", "JSON parsing error: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            },
-                    new Response.ErrorListener()
-            {
-                @Override
-                public void onErrorResponse(VolleyError error)
-                {
-                    Log.e("Error", "Error during post request", error);
-                    //Log.d("error45","error.toString()");
-
-                }
-            }){
-                @Nullable
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String,String>params = new HashMap<>();
-                    params.put("name",name);
-                    params.put("email",email);
-                    params.put("company",company);
-                    params.put("phone_number",pnumber);
-                    params.put("designation",designation);
-                  //  params.put("captured_by",SharedPrefManager.getInstance(getContext()).getKeyUserEmail());
-                    return params;
-                }
-            };
-            RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
         }
+    }
+
+    private void sendToDB(String name, String company, String email, String pnumber, String designation)
+    {
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("name", name);
+            postData.put("email", email);
+            postData.put("company", company);
+            postData.put("phone_number", pnumber);
+            postData.put("designation", designation);
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Constants.POST_GUEST, postData,
+                response -> {
+                    try {
+                        String message = response.getString("message");
+                        if (message.equals("Success")) {
+                            // The submission was successful
+                            Toasty.info(getActivity(),"Checkin Successful", Toast.LENGTH_LONG,false).show();
+
+                        } else {
+                            Toasty.info(getActivity(),"Checkin Failed\n Check again", Toast.LENGTH_LONG,false).show();
+
+                        }
+                    } catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                        // Handle JSON parsing error
+                        Toasty.info(getActivity(),"Error Occurred", Toast.LENGTH_LONG,false).show();
+                    }
+                },
+                error -> {
+                    // Handle error response here
+                    Toasty.info(getActivity(),"Error Occurred", Toast.LENGTH_LONG,false).show();
+
+                });
+
+
+        // Add the request to the Volley request queue
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity()); // Replace with your Context
+        requestQueue.add(jsonObjectRequest);
+
     }
 
 }
 
-
-//OUTCOMPLETE VIEW

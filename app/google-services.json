@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "184912280014-jinr091t34q97t9olm6qiqi1m0bfftns.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.impax.impaxguestapp",
+            "certificate_hash": "b5e5b0856dbff5d619847838315f08ccbaf81ecd"
+          }
+        },
+        {
           "client_id": "184912280014-ueogk24apuo0lvq2lfqohbkn8d0n2j88.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

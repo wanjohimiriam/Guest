@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="16dp">
+
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="25sp"
+    android:fontFamily="@font/comf"
+    android:text="Select Guest"
+    />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:layout_marginTop="10dp">
+
+        <SearchView
+            android:id="@+id/simpleSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:searchIcon="@drawable/search_icon"
+            android:queryHint="Search Here"
+            >
+
+            <requestFocus />
+        </SearchView>
+
+    </LinearLayout>
+<EditText
+    android:id="@+id/editText_of_searchableSpinner"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Search..."
+    android:visibility="gone"
+    android:padding="12dp"
+    android:fontFamily="@font/comf"
+    android:singleLine="true"
+    android:background="@android:drawable/editbox_background"
+    />
+
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/listView_of_searchableSpinner"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    />
+
+
+</LinearLayout>

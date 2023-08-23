@@ -13,4 +13,6 @@ public class Constants {
 
     public static final String UPDATE = ROOT_URL+"update-guest/{id}";
 
+    public static final String SEARCH_GUEST = ROOT_URL+"get-guest-data/{id}";
+
 }
