@@ -46,6 +46,8 @@ public class CaptureFragment extends Fragment {
     private EditText nameT,emailT,companyT,pnumberT,designationT;
 
     private Button buttonSubmit;
+    private Button addSubmit;
+    private Button confirmSubmit;
     private ImageView search_img;
     ArrayList<String> items=new ArrayList<>();
     private SpinnerDialog spinnerDialog;
@@ -76,7 +78,8 @@ public class CaptureFragment extends Fragment {
         companyT = view.findViewById(R.id.companyT);
         pnumberT = view.findViewById(R.id.pnumberT);
         designationT = view.findViewById(R.id.designationT);
-        buttonSubmit = view.findViewById(R.id.buttonSubmit);
+        addSubmit= view.findViewById(R.id.buttonNew);
+        confirmSubmit = view.findViewById(R.id.buttonConfirm);
         search_img = view.findViewById(R.id.search_img);
         listview= view.findViewById(R.id.listViewResults);
         //full names
@@ -86,7 +89,9 @@ public class CaptureFragment extends Fragment {
         email = new ArrayList<>();
         pnumber = new ArrayList<>();
         designation = new ArrayList<>();
-        buttonSubmit.setOnClickListener(v -> post());
+
+        addSubmit.setOnClickListener(v -> post());
+        confirmSubmit.setOnClickListener(v -> post());
         allItems = new ArrayList<>();
         displayedItems = new ArrayList<>(allItems);
 
