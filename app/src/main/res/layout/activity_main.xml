@@ -28,7 +28,7 @@
 
 
 
-        <com.shobhitpuri.custombuttons.GoogleSignInButton
+        <com.google.android.gms.common.SignInButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -37,9 +37,8 @@
             android:layout_marginEnd="30dp"
             android:fontFamily="@font/comf"
             android:text="CONTINUE WITH GOOGLE"
-            app:isDarkTheme="true"
             android:id="@+id/googleB"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,MissingClass" />
 
 
 

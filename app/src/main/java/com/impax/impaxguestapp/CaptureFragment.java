@@ -236,12 +236,12 @@ public class CaptureFragment extends Fragment {
                     {
                         e.printStackTrace();
                         // Handle JSON parsing error
-                        Toasty.info(getActivity(),"Error Occurred", Toast.LENGTH_LONG,false).show();
+                        Toasty.info(getActivity(),"Error Occurred1", Toast.LENGTH_LONG,false).show();
                     }
                 },
                 error -> {
                     // Handle error response here
-                    Toasty.info(getActivity(),"Error Occurred", Toast.LENGTH_LONG,false).show();
+                    Toasty.info(getActivity(),"Error Occurred2", Toast.LENGTH_LONG,false).show();
 
                 });
 

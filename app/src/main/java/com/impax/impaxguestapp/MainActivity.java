@@ -19,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,13 +28,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.shobhitpuri.custombuttons.GoogleSignInButton;
 
 public class MainActivity extends AppCompatActivity {
     GoogleSignInClient googleSignInClient;
     private FirebaseAuth firebaseAuth;
     private Button loginB;
-    private GoogleSignInButton signInButton;
+    private SignInButton signInButton;
     private static final String TAG = "RegiterPreviewctivity";
     private static final int RC_SIGN_IN = 1001;
 
