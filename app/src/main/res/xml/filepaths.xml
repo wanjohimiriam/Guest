@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- For internal storage: /data/data/com.impax.impaxguestapp/files/ -->
+    <files-path name="internal_files" path="Download/" />
+
+    <!-- For cache storage: /data/data/com.impax.impaxguestapp/cache/ -->
+    <cache-path name="cache" path="Download/" />
+
+    <!-- For external app-specific storage: /storage/emulated/0/Android/data/com.impax.impaxguestapp/files/ -->
+    <external-files-path name="external_files" path="Download/" />
+
+    <!-- For external cache storage: /storage/emulated/0/Android/data/com.impax.impaxguestapp/cache/ -->
+    <external-cache-path name="external_cache" path="Download/" />
+</paths>

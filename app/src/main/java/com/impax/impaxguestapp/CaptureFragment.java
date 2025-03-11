@@ -1,5 +1,13 @@
 package com.impax.impaxguestapp;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.Manifest;
+
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -12,9 +20,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.AuthFailureError;
@@ -25,11 +38,19 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.crashlytics.internal.model.CrashlyticsReport;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +86,9 @@ public class CaptureFragment extends Fragment {
 
     private List<String> allItems;
     private List<String> displayedItems;
+    private TextView textViewDownloadCSV;
+    private static final int PERMISSION_REQUEST_CODE = 100;
+
 
 
 
@@ -101,6 +125,13 @@ public class CaptureFragment extends Fragment {
 
         spinnerDialog.setCancellable(true); // for cancellable
         spinnerDialog.setShowKeyboard(false);// for open keyboard by default
+        textViewDownloadCSV = view.findViewById(R.id.tv_download_csv);
+        textViewDownloadCSV.setOnClickListener(v -> {
+            File downloadedFile = new File(requireContext().getExternalFilesDir(null), "yourfile.csv");
+            downloadCSV();
+        });
+
+
 
 
         spinnerDialog.bindOnSpinerListener(new OnSpinerItemClick() {
@@ -126,8 +157,118 @@ public class CaptureFragment extends Fragment {
 
     }
 
+    private void downloadCSV() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // For Android 10+, use MediaStore or app-specific storage
+            startDownload();
+        } else {
+            // For older Android versions, check permission
+            if (ContextCompat.checkSelfPermission(requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(),
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+                return;
+            }
+            startDownload();
+        }
+    }
+
+
+    private void startDownload() {
+        new Thread(() -> {
+            try {
+                String fileURL = Constants.DOWNLOAD;
+                Log.d("Download", "URL: " + fileURL);
+                URL url = new URL(fileURL);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setDoInput(true);
+                connection.setConnectTimeout(15000); // Set timeouts
+                connection.setReadTimeout(15000);
+                connection.connect();
+
+
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    InputStream inputStream = new BufferedInputStream(connection.getInputStream());
+                    Log.d("Download", "Download successful!");
+
+                    // Different file handling for Android 10+
+                    File downloadFile;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        // Use app-specific directory for Android 10+
+                        File appDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+                        downloadFile = new File(appDir, "GuestsTemplate.csv");
+                    } else {
+                        // Use public directory for older versions
+                        File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+
+                        if (!downloadDir.exists()) {
+                            downloadDir.mkdirs(); // Create directory if it doesn't exist
+                        }
+                        downloadFile = new File(downloadDir, "GuestsTemplate.csv");
+                    }
+
+                    FileOutputStream outputStream = new FileOutputStream(downloadFile);
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+
+                    outputStream.flush();
+                    outputStream.close();
+                    inputStream.close();
+
+                    requireActivity().runOnUiThread(() ->
+                            Snackbar.make(requireView(), "Excel Downloaded Successfully", Snackbar.LENGTH_LONG)
+                                    .setAction("OPEN", v -> {
+
+                                        Uri fileUri = FileProvider.getUriForFile(
+                                                requireContext(),
+                                                requireContext().getPackageName() + ".provider",
+                                                downloadFile
+                                        );
+
+                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                                        intent.setDataAndType(fileUri, "text/csv"); // Change MIME type based on file type
+                                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                        startActivity(intent);
+                                    }).show());
+
+//
+                } else {
+                    final int responseCode = connection.getResponseCode(); // This line throws IOException
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(getActivity(), "Download Failed: Server Error Code " +
+                                    responseCode, Toast.LENGTH_LONG).show()
+                    );
+                }
+                connection.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+                requireActivity().runOnUiThread(() ->
+                        Toast.makeText(getActivity(), "Download Failed: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
+            }
+        }).start();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                startDownload();
+            } else {
+                Toast.makeText(getActivity(), "Storage Permission Denied", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
     private void loadspinner_visitors() {
-        StringRequest loadSpinnerTools = new StringRequest(Request.Method.GET,Constants.GET_GUESTS , response -> {
+        StringRequest loadSpinnerTools = new StringRequest(Request.Method.GET,Constants.DISPLAY_GUESTS , response -> {
             JSONObject json = null;
 
             try {
@@ -205,52 +346,53 @@ public class CaptureFragment extends Fragment {
         }
     }
 
-    private void sendToDB(String name, String company, String email, String pnumber, String designation)
-    {
+    private void sendToDB(String name, String company, String email, String pnumber, String designation) {
         JSONObject postData = new JSONObject();
         try {
             postData.put("name", name);
             postData.put("email", email);
             postData.put("company", company);
-            postData.put("phone_number", pnumber);
+            postData.put("phoneNo", pnumber);
             postData.put("designation", designation);
-        } catch (JSONException e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Constants.POST_GUEST, postData,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                Constants.POST_GUEST,
+                postData,
                 response -> {
-                    try {
-                        String message = response.getString("message");
-                        if (message.equals("Success")) {
-                            // The submission was successful
-                            Toasty.info(getActivity(),"Checkin Successful", Toast.LENGTH_LONG,false).show();
+                    Log.d("API Response", response.toString()); // Debugging: Print full response
 
-                        } else {
-                            Toasty.info(getActivity(),"Checkin Failed\n Check again", Toast.LENGTH_LONG,false).show();
+                    if (response.has("message")) {
+                        String message = response.optString("message", "No message found");
+                        Log.d("API Response", "Message: " + message);
 
-                        }
-                    } catch (JSONException e)
-                    {
-                        e.printStackTrace();
-                        // Handle JSON parsing error
-                        Toasty.info(getActivity(),"Error Occurred1", Toast.LENGTH_LONG,false).show();
+                        requireActivity().runOnUiThread(() -> {
+                            if ("success".equalsIgnoreCase(message)) {
+                                Toasty.success(requireActivity(), "Check-in Successful!", Toast.LENGTH_LONG, true).show();
+                            } else {
+                                Toasty.error(requireActivity(), "Check-in Failed. Try again!", Toast.LENGTH_LONG, true).show();
+                            }
+                        });
+                    } else {
+                        Log.e("JSON Error", "Key 'message' not found in response.");
+                        requireActivity().runOnUiThread(() ->
+                                Toasty.warning(requireActivity(), "Unexpected response format", Toast.LENGTH_LONG, true).show()
+                        );
                     }
                 },
                 error -> {
-                    // Handle error response here
-                    Toasty.info(getActivity(),"Error Occurred2", Toast.LENGTH_LONG,false).show();
+                    Log.e("API Error", "Request Failed: " + error.toString());
+                    Toasty.info(getActivity(), "Network Error: Unable to process request", Toast.LENGTH_LONG, false).show();
+                }
+        );
 
-                });
-
-
-        // Add the request to the Volley request queue
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity()); // Replace with your Context
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         requestQueue.add(jsonObjectRequest);
-
     }
+
 
 }
 

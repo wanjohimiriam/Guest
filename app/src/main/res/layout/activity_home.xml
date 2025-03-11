@@ -23,6 +23,17 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
         </ScrollView>
     </LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@id/navigationView"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="8dp"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:backgroundTint="@color/red_btn_bg_color"
+        android:elevation="8dp"/>
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

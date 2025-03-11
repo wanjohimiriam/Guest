@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
         emailTV.setText("("+SharedPrefManager.getInstance(getContext()).getKeyUserEmail()+")");
         recyclerView = view.findViewById(R.id.recyclerViewPosts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
         loadRecyclerView();
         return view;
 
@@ -66,8 +66,8 @@ public class HomeFragment extends Fragment {
                     String name = o.getString("name");
                     String email = o.getString("email");
                     String company = o.getString("company");
-                    String phoneNumber = o.optString("phone_number", ""); // Handle the case when phone_number is null
-                    String updatedAt = o.getString("updated_at");
+                    String phoneNumber = o.optString("phoneNo", ""); // Handle the case when phone_number is null
+                    String updatedAt = o.getString("updatedAt");
 
                     RecordsList item = new RecordsList(name, email, company, phoneNumber, updatedAt);
                     listItems.add(item);

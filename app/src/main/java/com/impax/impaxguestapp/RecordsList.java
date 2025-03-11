@@ -5,8 +5,10 @@ import android.annotation.SuppressLint;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class RecordsList {
     // public String id;
@@ -49,30 +51,44 @@ public class RecordsList {
     public String getUpdated_at() {
         return updated_at;
     }
+
     public String getDatePart() {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.US);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date date = inputFormat.parse(updated_at);
-            return dateFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Africa/Nairobi"));
+        return dateFormat.format(Calendar.getInstance().getTime());
     }
 
+    // ✅ Return current time in Kenya
     public String getTimePart() {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.US);
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.US);
-        try {
-            Date date = inputFormat.parse(updated_at);
-            return timeFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        timeFormat.setTimeZone(TimeZone.getTimeZone("Africa/Nairobi"));
+        return timeFormat.format(Calendar.getInstance().getTime());
     }
 }
+//    public String getDatePart() {
+//        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.US);
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        try {
+//            Date date = inputFormat.parse(updated_at);
+//            return dateFormat.format(date);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            return "";
+//        }
+//    }
+//
+//    public String getTimePart() {
+//        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.US);
+//        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.US);
+//        try {
+//            Date date = inputFormat.parse(updated_at);
+//            return timeFormat.format(date);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            return "";
+//        }
+//    }
+
 
 
 
